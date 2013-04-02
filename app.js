@@ -1,15 +1,20 @@
 var Player = Backbone.View.extend({
+		el : '#player',
 		events : {
 			'click .next' : 'next'
 		},
 
-		next : function(ev) {
-			ev.preventDefault();
-			console.log(next);
+		next : function() {
+			window.app.feed.push('abcde');
 		}
 	}),
 
-	Feed = Backbone.View.extend({});
+	Feed = Backbone.View.extend({
+		el : '#events',
+		push : function(item) {
+			this.$('.list').append($('<li />').text(item));
+		}
+	}),
 
 	App = Backbone.View.extend({
 		events : {
@@ -17,8 +22,8 @@ var Player = Backbone.View.extend({
 		},
 
 		initialize : function() {
-			this.player = new Player({ el : '#player' });
-			this.feed = new Feed({ el : '#events' });
+			this.player = new Player();
+			this.feed = new Feed();
 		},
 
 		handleKey : function(ev) {
