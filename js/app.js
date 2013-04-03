@@ -38,13 +38,15 @@ var Event = Backbone.Model.extend({
 			this.render();
 		},
 		next : function() {
-			if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) {
+			if(self.loaded / _.pluck(window.events, 'audio').length === 1) {
+				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) {
 				window.app.past.collection.add(this.model, { at : 0 });
-				this.model.audio.stop();
+					this.model.audio.stop();
+				}
+				this.model = window.app.up.collection.shift();
+				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.play();
+				this.render();
 			}
-			this.model = window.app.up.collection.shift();
-			if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.play();
-			this.render();
 		},
 		render : function() {
 			var self = this,
@@ -56,7 +58,6 @@ var Event = Backbone.Model.extend({
 				html = templates.playerReady.render();
 				this.$('.next').unwrap();
 			} else html = templates.playerLoading.render({ percent : (self.loaded / length) * 100 });
-
 
 			this.$('.current').html(html);
 		}
