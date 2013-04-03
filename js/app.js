@@ -43,17 +43,20 @@ var Event = Backbone.Model.extend({
 				this.model.audio.stop();
 			}
 			this.model = window.app.up.collection.shift();
-			if(!_.isUndefined(this.model.audio)) this.model.audio.play();
+			if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.play();
 			this.render();
 		},
 		render : function() {
 			var self = this,
-				length = _.pluck(events, 'audio').length,
+				length = _.pluck(window.events, 'audio').length,
 				html;
 
 			if(this.model) html = templates.currentEvent.render(this.model.attributes);
-			else if(this.loaded === length) html = templates.playerReady.render();
-			else html = templates.playerLoading.render({ percent : (self.loaded / length) * 100 });
+			else if(this.loaded === length) {
+				html = templates.playerReady.render();
+				this.$('.next').unwrap();
+			} else html = templates.playerLoading.render({ percent : (self.loaded / length) * 100 });
+
 
 			this.$('.current').html(html);
 		}
@@ -82,10 +85,10 @@ var Event = Backbone.Model.extend({
 			'keypress' : 'handleKey'
 		},
 
-		initialize : function() {
+		initialize : function(options) {
 			var self = this;
 			this.player = new Player();
-			this.up = new Feed({ el : '#up', collection : new Events(events) });
+			this.up = new Feed({ el : '#up', collection : new Events(window.events) });
 			this.past = new Feed({ el : '#past', collection : new Events() });
 		},
 
@@ -99,58 +102,6 @@ var Event = Backbone.Model.extend({
 			}
 		}
 	}),
-
-	events = [
-		{
-			"title" : "Preshow",
-			"startcue" : "open of house",
-			"endcue" : "J: LINE HERE",
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		},
-		{
-			"title" : "Toothpaste",
-			"startcue" : "open of house",
-			"endcue" : false,
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		},
-		{
-			"title" : "Toothpaste",
-			"startcue" : "open of house",
-			"endcue" : false,
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		},
-		{
-			"title" : "Toothpaste",
-			"startcue" : "open of house",
-			"endcue" : false,
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		},
-		{
-			"title" : "Toothpaste",
-			"startcue" : "open of house",
-			"endcue" : false,
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		},
-		{
-			"title" : "Toothpaste",
-			"startcue" : "open of house",
-			"endcue" : false,
-			"audio" : {
-				'urls' : [ 'audio/test.mp3' ]
-			}
-		}
-
-	],
 
 	templates = {
 		eventItem :
@@ -185,4 +136,9 @@ var Event = Backbone.Model.extend({
 
 _.each(templates, function(value, key) { templates[key] = Hogan.compile(value); });
 
-$(function() { window.app = new App({el:'body'}); });
+$(function() {
+	$.getJSON('events.json', function(data) {
+		window.events = data;
+		window.app = new App({el:'body'});
+	});
+});
