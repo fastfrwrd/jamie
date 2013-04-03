@@ -34,15 +34,14 @@ var Event = Backbone.Model.extend({
 			'click .next' : 'next'
 		},
 		initialize : function(options) {
+			this.totalTracks = _.countBy(window.events, function(e) { return (_.has(e, 'audio')) ? 'tracks' : false; }).tracks;
 			Player.__super__.initialize.call(this, options);
 			this.render();
 		},
 		next : function() {
-			if(self.loaded / _.pluck(window.events, 'audio').length === 1) {
-				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) {
-				window.app.past.collection.add(this.model, { at : 0 });
-					this.model.audio.stop();
-				}
+			if(this.loaded / this.totalTracks === 1) {
+				if(!_.isUndefined(this.model)) window.app.past.collection.add(this.model, { at : 0 });
+				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.stop();
 				this.model = window.app.up.collection.shift();
 				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.play();
 				this.render();
@@ -50,14 +49,20 @@ var Event = Backbone.Model.extend({
 		},
 		render : function() {
 			var self = this,
-				length = _.pluck(window.events, 'audio').length,
 				html;
 
-			if(this.model) html = templates.currentEvent.render(this.model.attributes);
-			else if(this.loaded === length) {
+			if(this.model) {
+				console.log('up now: ', this.model.get('title'));
+				html = templates.currentEvent.render(this.model.attributes);
+			}
+			else if(this.loaded === this.totalTracks) {
+				console.log('loaded');
 				html = templates.playerReady.render();
-				this.$('.next').unwrap();
-			} else html = templates.playerLoading.render({ percent : (self.loaded / length) * 100 });
+				this.$('.button-bar').removeClass('hide');
+			} else {
+				console.log('loading: ', self.loaded, '/', self.totalTracks);
+				html = templates.playerLoading.render({ percent : (self.loaded / self.totalTracks) * 100 });
+			}
 
 			this.$('.current').html(html);
 		}

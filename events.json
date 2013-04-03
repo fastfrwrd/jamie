@@ -1,12 +1,22 @@
 [
 	{
 		"title" : "Preshow",
-		"startcue" : "open of house",
-		"endcue" : "J: LINE HERE"
+		"endcue" : "Mom: Jamie- Mr. Hoppy needs to be put away.",
+		"audio" : {
+			"urls" : [ "audio/preshow.mp3" ],
+			"loop" : true 
+		}
+	},
+	{
+		"title" : "Opening Dialog",
+		"end" : "Okay. Since you asked politely.",
+		"fadeout" : 10000
 	},
 	{
 		"title" : "Toothpaste",
-		"startcue" : "open of house",
-		"endcue" : false
+		"end" : "(autoend) Mom: Jamie!",
+		"audio" : {
+			"urls" : [ "audio/toothpaste.mp3" ]
+		}
 	}
 ]
