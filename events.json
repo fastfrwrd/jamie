@@ -1,22 +1,103 @@
 [
 	{
 		"title" : "Preshow",
-		"endcue" : "Mom: Jamie- Mr. Hoppy needs to be put away.",
+		"endcue" : "<strong>M:</strong> Jamie- Mr. Hoppy needs to be put away.",
 		"audio" : {
 			"urls" : [ "audio/preshow.mp3" ],
 			"loop" : true 
-		}
+		},
+		"fadeout" : 5000
 	},
 	{
 		"title" : "Opening Dialog",
-		"end" : "Okay. Since you asked politely.",
-		"fadeout" : 10000
+		"endcue" : "<strong>M:</strong> Okay. Since you asked politely."
 	},
 	{
 		"title" : "Toothpaste",
-		"end" : "(autoend) Mom: Jamie!",
+		"endcue" : "<em>(autoend)</em> <strong>M:</strong> Jamie!",
 		"audio" : {
 			"urls" : [ "audio/toothpaste.mp3" ]
 		}
+	},
+	{
+		"title" : "Toothpaste Cleanup",
+		"endcue" : "<strong>M:</strong> It's not a choice.<br /><strong>J:</strong> I'm not taking a bath."
+	},
+	{
+		"title" : "Duck!",
+		"endcue" : "<em>(autoend whenever)</em>",
+		"fadeout" : 3000
+	},
+	{
+		"title" : "Ferguson",
+		"endcue" : "<strong>J:</strong> Towel."
+	},
+	{
+		"title" : "Cape",
+		"endcue" : "<em>(autoend, straight into Washcloths)</em>"
+	},
+	{
+		"title" : "Washcloths",
+		"audio" : {
+			"urls" : [ "audio/preshow.mp3" ],
+			"loop" : true
+		},
+		"fadeout" : 3000,
+		"endcue" : "<strong>M:</strong> Jamie, let's get you into the bathtub so you can keep playing with the washcloths."
+	},
+	{
+		"title" : "No No NO!",
+		"endcue" : "<strong>M:</strong> But we were having so much fun with the washcloths..."
+	},
+	{
+		"title" : "Princess : Intro",
+		"audio" : [
+			{
+				"urls" : [ "audio/princess.mp3" ],
+				"loop" : true,
+				"volume" : 1.0
+			},
+			{
+				"urls" : [ "audio/princess-duck.mp3" ],
+				"loop" : true,
+				"volume" : 0.0
+			},
+			{
+				"urls" : [ "audio/princess-next.mp3" ],
+				"loop" : true,
+				"volume" : 0.4
+			}
+		],
+		"endcue" : "<strong>M:</strong> He invited the first animal to help."
+	},
+	{
+		"title" : "Princess : Duck",
+		"noStop" : true,
+		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
+	},
+	{
+		"title" : "Princess : Fish",
+		"noStop" : true,
+		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
+	},
+	{
+		"title" : "Princess : Frog",
+		"noStop" : true,
+		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
+	},
+	{
+		"title" : "Princess : Octopus",
+		"fadeout" : 3000,
+		"noStop" : true,
+		"endcue" : "<strong>M:</strong> He decided to invite one last person to help."
+	},
+	{
+		"title" : "Princess : Mermaid",
+		"audio" : {
+			"urls" : [ "audio/princess.mp3" ],
+			"loop" : true
+		},
+		"fadeout" : 3000,
+		"endcue" : "<strong>M:</strong> Jamie. You can’t just stay in the bathroom and play. You would miss out on so many things. Like your first day of school tomorrow."
 	}
 ]
