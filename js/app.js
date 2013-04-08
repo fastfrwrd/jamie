@@ -99,11 +99,7 @@ var Event = Backbone.Model.extend({
 				// push model onto old queue
 				if(oldModel) window.app.past.collection.add(oldModel, { at : 0 });
 				// if we need to keep going, handle volume changes and put old model audio onto new model audio
-				if(newModel && newModel.get('noStop')) {
-					newModel.audio = oldModel.audio;
-					// set ze volumes
-					if(newModel.get('volume')) this.volume(newModel.get('volume'));
-				}
+				if(newModel && newModel.get('noStop')) newModel.audio = oldModel.audio;
 				// we're gonna fade out the old track otherwise
 				else if(oldModel && oldModel.audio) {
 					var vol = (oldModel.get('fadevol')) ? oldModel.get('fadevol') : 0,
@@ -113,6 +109,8 @@ var Event = Backbone.Model.extend({
 				}
 				// there's a new model in town
 				this.model = newModel;
+				// set volumes if there are any to set
+				if(this.model && this.model.get('volume')) this.volume(this.model.get('volume'));
 				// play audio if it exists
 				if(this.model) this.model.play();
 				this.render();
@@ -130,19 +128,20 @@ var Event = Backbone.Model.extend({
 		},
 
 		volume : function(v) {
-			// we've got a single Howl playing - let's just set the whole player's volume here
-			if(_.isObject(this.model.audio)) Howler.volume( Howler.volume() + v );
+			var self = this;
 			// an array means we've got a list of volume setters for currently playing tracks
-			else if (_.isArray(v)) {
+			if (_.isArray(v)) {
 				_.each(v, function(values, index) {
 					_.defaults(values, {
 						volume : 0.5,
 						time : 300
 					});
 
-					//this.model.audio[index].fadeIn();
+					self.model.audio[index].fade(self.model.audio[index].volume(), values.volume, values.time);
 				});
 			}
+			// we've got a single Howl playing - let's just set the whole player's volume here
+			else if(_.isObject(this.model.audio)) Howler.volume( Howler.volume() + v );
 			// we just need to adjust the volume globally
 			else _.each(this.model.audio, function() { this.volume( this.volume() + v ); });
 		},
