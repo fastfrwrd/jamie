@@ -61,7 +61,11 @@
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-next.mp3" ],
+				"urls" : [ "audio/princess-fish.mp3" ],
+				"loop" : true
+			},
+			{
+				"urls" : [ "audio/princess-octopus.mp3" ],
 				"loop" : true
 			}
 		],
@@ -72,11 +76,15 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 100
+				"time" : 0
 			},
 			{
 				"volume" : 0,
-				"time" : 100
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			}
 		],
 		"endcue" : "<strong>M:</strong> He invited the first animal to help."
@@ -94,10 +102,13 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 100
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			}
 		],
-		"noStop" : true,
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
 	},
 	{
@@ -114,20 +125,57 @@
 			{
 				"volume" : 1,
 				"time" : 10000
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			}
 		],
-		"noStop" : true,
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
 	},
 	{
 		"title" : "Princess : Frog",
-		"noStop" : true,
+		"volume" : [
+			{	
+				"volume" : 0.7, 
+				"time" : 10000 
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			},
+			{
+				"volume" : 1,
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			}
+		],
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
 	},
 	{
 		"title" : "Princess : Octopus",
+		"volume" : [
+			{	
+				"volume" : 0.5, 
+				"time" : 10000 
+			},
+			{
+				"volume" : 0,
+				"time" : 4000
+			},
+			{
+				"volume" : 0,
+				"time" : 4000
+			},
+			{
+				"volume" : 1,
+				"time" : 6000
+			}
+		],
 		"fadeout" : 3000,
-		"noStop" : true,
 		"endcue" : "<strong>M:</strong> He decided to invite one last person to help."
 	},
 	{
@@ -138,5 +186,32 @@
 		},
 		"fadeout" : 3000,
 		"endcue" : "<strong>M:</strong> Jamie. You can’t just stay in the bathroom and play. You would miss out on so many things. Like your first day of school tomorrow."
+	},
+	{
+		"title" : "No buts.",
+		"endcue" : "<strong>M:</strong> I don’t want a bath or a lunch.  I want to stay here - I like playing here."
+	},
+	{
+		"title" : "TP",
+		"audio" : {
+			"urls" : [ "audio/tp.mp3" ],
+			"loop" : false
+		},
+		"fadeout" : 1000,
+		"endcue" : "<em>(autoend)</em>"
+	},
+	{
+		"title" : "What has gotten into you?",
+		"endcue" : "<strong>M:</strong> Let’s just get it cleaned up. Okay?"
+	},
+	{
+		"title" : "Big kid",
+		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
+		"fadeout" : 4000
+	},
+	{
+		"title" : "Post-show",
+		"endcue" : "",
+		"fadeout" : 20000
 	}
 ]

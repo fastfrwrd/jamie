@@ -33,15 +33,21 @@ var Event = Backbone.Model.extend({
 			else this.audio.pause();
 		},
 
-		fade : function(from, to, vol, cb) {
+		fade : function(from, to, time, cb) {
 			if(_.isArray(this.audio)) _.each(this.audio, function(howl) {
 				if(_.isNull(from)) from = howl.volume();
-				howl.fade(from, to, vol, cb);
+				howl.fade(from, to, time, cb);
 			});
 			else {
+				var self = this;
 				if(_.isNull(from)) from = this.audio.volume();
-				this.audio.fade(from, to, vol, cb);
+				this.audio.fade(from, to, time, cb);
 			}
+		},
+
+		stop : function() {
+			if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.stop(); });
+			else this.audio.stop();
 		},
 
 		_setupTrack : function(audio) {
@@ -53,7 +59,7 @@ var Event = Backbone.Model.extend({
 						window.app.player.loaded++;
 						window.app.player.render();
 					},
-					onend : function() {
+					onend : function(e) {
 						var m = window.app.player.model;
 						if(m && m.audio && !_.isArray(m.audio) && !m.audio._loop) window.app.player.next();
 					}
@@ -99,13 +105,16 @@ var Event = Backbone.Model.extend({
 				// push model onto old queue
 				if(oldModel) window.app.past.collection.add(oldModel, { at : 0 });
 				// if we need to keep going, handle volume changes and put old model audio onto new model audio
-				if(newModel && newModel.get('noStop')) newModel.audio = oldModel.audio;
+				if(newModel && newModel.get('volume') && _.isUndefined(newModel.audio)) {
+					newModel.audio = oldModel.audio;
+					newModel.set('noStop', true);
+				}
 				// we're gonna fade out the old track otherwise
 				else if(oldModel && oldModel.audio) {
 					var vol = (oldModel.get('fadevol')) ? oldModel.get('fadevol') : 0,
 						time = (oldModel.get('fadeout')) ? oldModel.get('fadeout') : 100;
 
-					oldModel.fade(null, vol, time);
+					oldModel.fade(null, vol, time, function() { oldModel.stop(); });
 				}
 				// there's a new model in town
 				this.model = newModel;
