@@ -2,9 +2,13 @@
 <html>
 <head>
 	<title>Jamie Doesn't Want to Take a Bath</title>
+	<meta charset="utf8">
+    <meta name="viewport" content="width=device-width">
+
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/foundation.css" />
 	<link rel="stylesheet" href="css/app.css" />
+
 	<script src="js/jquery.js"></script>
 	<script src="js/underscore.js"></script>
 	<script src="js/backbone.js"></script>
@@ -23,17 +27,17 @@
 		</div>
 		
 		<div class="row">
-			<div class="large-3 columns" id="up">
+			<div class="large-3 columns hide-for-small" id="up">
 				<h3>Next</h3>
 				<ul></ul>
 			</div>
 			<div class="large-6 columns" id="player">
 				<div class="current"></div>
-				<div class="button-bar hide">
+				<div class="button-bar hide show-for-large">
 					<ul class="button-group">
-						<li><button class="prev small button primary">&laquo; Previous</button></li>
+						<li><button class="prev small button primary">&laquo;</button></li>
 						<li><button class="pause small button primary">Pause</button></li>
-						<li><button class="next small button primary">Next &raquo;</button></li>
+						<li><button class="next small button primary">&raquo;</button></li>
 					</ul>
 					<ul class="button-group right">
 						<li><button class="vol up small button success">+</button></li>
@@ -41,8 +45,13 @@
 						<li><button class="mute small button secondary">Mute</button></li>
 					</ul>
 				</div>
+				<div class="button-bar hide show-for-small">
+					<button class="next large expand button primary">Next</button>
+					<button class="pause large expand button success">Pause</button>
+					<button class="mute large expand button secondary">Mute</button>
+				</div>
 			</div>
-			<div class="large-3 columns" id="past">
+			<div class="large-3 columns hide-for-small" id="past">
 				<h3>Past</h3>
 				<ul></ul>
 			</div>
