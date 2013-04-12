@@ -27,14 +27,14 @@ var Event = Backbone.Model.extend({
 		},
 
 		play : function() {
-			if(_.isUndefined(this.audio)) return;
-			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { console.log(howl); howl.play(); });
+			if(_.isUndefined(this.audio) || this.get('noStop')) return;
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.play(); });
 			else this.audio.play();
 		},
 
 		pause : function() {
 			if(_.isUndefined(this.audio)) return;
-			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { console.log(howl); howl.pause(); });
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.pause(); });
 			else this.audio.pause();
 		},
 
@@ -105,25 +105,27 @@ var Event = Backbone.Model.extend({
 
 		runEvent : function(newModel, oldModel) {
 			if(this.loaded / this.totalTracks === 1) {
+				// there's a new model in town
+				this.model = newModel;
 				// if we need to keep going, handle volume changes and put old model audio onto new model audio
-				if(newModel && newModel.get('volume') && _.isUndefined(newModel.audio)) {
-					newModel.audio = oldModel.audio;
-					newModel.set('noStop', true);
+				if(newModel && newModel.get('volume')) {
+					if(oldModel) {
+						newModel.audio = oldModel.audio;
+					} else {
+						this.model.play();
+					}
 				}
 				// we're gonna fade out the old track otherwise
-				else if(oldModel && oldModel.audio) {
+				else if(oldModel && oldModel.audio && !newModel.get('volume')) {
 					var vol = (oldModel.get('fadevol')) ? oldModel.get('fadevol') : 0,
 						time = (oldModel.get('fadeout')) ? oldModel.get('fadeout') : 100;
 
 					oldModel.fade(null, vol, time, function() { oldModel.stop(); });
+					// play audio if it exists
+					if(this.model) this.model.play();
 				}
-				// there's a new model in town
-				this.model = newModel;
 				// set volumes if there are any to set
-				if(this.model && this.model.get('volume')) this.volume(this.model.get('volume'));
-				else if(this.model && this.model.audio) this.model.audio.volume(1);
-				// play audio if it exists
-				if(this.model) this.model.play();
+				this.volume(this.model.get('volume'));
 				this.render();
 			}
 		},
@@ -141,19 +143,19 @@ var Event = Backbone.Model.extend({
 
 		previous : function() {
 			if(this.loaded / this.totalTracks === 1) {
+				this.model.stop();
+
 				var self = this,
-					newModel = window.app.past.collection.shift(),
-					oldModel;
+					newModel = window.app.past.collection.shift();
 
 				// push model onto old queue
 				if(this.model) window.app.up.collection.add(this.model, { at : 0 });
-				this.model.stop();
 
 				// if we're in the middle of stems
 				if(newModel.get('volume') && !newModel.audio) {
-					oldModel = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); });
+					newModel.audio = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); }).audio;
 				}
-				this.runEvent(newModel, oldModel);
+				this.runEvent(newModel);
 			}
 		},
 
@@ -177,24 +179,25 @@ var Event = Backbone.Model.extend({
 
 				// if we're in the middle of stems
 				if(newModel.get('volume') && !newModel.audio) {
-					oldModel = target.collection.find(function(m) { return _.has(m, 'audio'); });
+					newModel.audio = target.collection.find(function(m) { return _.has(m, 'audio'); }).audio;
 				}
 
-				this.runEvent(newModel, oldModel);
+				this.runEvent(newModel);
 			}
 		},
 
 		volume : function(v) {
 			var self = this;
 			// an array means we've got a list of volume setters for currently playing tracks
-			if (_.isArray(v)) {
+			if (_.isArray(v) && _.isArray(this.model.audio)) {
 				_.each(v, function(values, index) {
 					_.defaults(values, {
 						volume : 0.5,
 						time : 300
 					});
 
-					self.model.audio[index].fade(self.model.audio[index].volume(), values.volume, values.time);
+					if(values.time === 0) self.model.audio[index].volume(values.volume);
+					else self.model.audio[index].fade(self.model.audio[index].volume(), values.volume, values.time);
 				});
 			}
 			// single howl
