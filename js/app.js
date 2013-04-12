@@ -19,6 +19,7 @@ var Event = Backbone.Model.extend({
 		initialize : function(options) {
 			if(_.isObject(options.audio) || _.isArray(options.audio)) this.audio = this._setupTrack(options.audio);
 			Event.__super__.initialize.call(this, options);
+			this.set('cid', this.cid);
 		},
 
 		play : function() {
@@ -47,7 +48,7 @@ var Event = Backbone.Model.extend({
 
 		stop : function() {
 			if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.stop(); });
-			else this.audio.stop();
+			else if(this.audio) this.audio.stop();
 		},
 
 		_setupTrack : function(audio) {
@@ -97,13 +98,9 @@ var Event = Backbone.Model.extend({
 			Player.__super__.initialize.call(this, options);
 			this.render();
 		},
-		next : function() {
+
+		runEvent : function(newModel, oldModel) {
 			if(this.loaded / this.totalTracks === 1) {
-				var self = this,
-					oldModel = this.model,
-					newModel = window.app.up.collection.shift();
-				// push model onto old queue
-				if(oldModel) window.app.past.collection.add(oldModel, { at : 0 });
 				// if we need to keep going, handle volume changes and put old model audio onto new model audio
 				if(newModel && newModel.get('volume') && _.isUndefined(newModel.audio)) {
 					newModel.audio = oldModel.audio;
@@ -120,19 +117,60 @@ var Event = Backbone.Model.extend({
 				this.model = newModel;
 				// set volumes if there are any to set
 				if(this.model && this.model.get('volume')) this.volume(this.model.get('volume'));
+				else if(this.model && this.model.audio) this.model.audio.volume(1);
 				// play audio if it exists
 				if(this.model) this.model.play();
 				this.render();
 			}
 		},
 
+		next : function() {
+			if(this.loaded / this.totalTracks === 1) {
+				var self = this,
+					oldModel = this.model,
+					newModel = window.app.up.collection.shift();
+				// push model onto old queue
+				if(oldModel) window.app.past.collection.add(oldModel, { at : 0 });
+				this.runEvent(newModel, oldModel);
+			}
+		},
+
 		previous : function() {
 			if(this.loaded / this.totalTracks === 1) {
-				if(!_.isUndefined(this.model)) window.app.up.collection.add(this.model, { at : 0 });
-				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.stop();
-				this.model = window.app.past.collection.shift();
-				if(!_.isUndefined(this.model) && !_.isUndefined(this.model.audio)) this.model.audio.play();
-				this.render();
+				var self = this,
+					oldModel = this.model,
+					newModel = window.app.past.collection.shift();
+				// push model onto old queue
+				if(oldModel) window.app.up.collection.add(oldModel, { at : 0 });
+				oldModel.stop();
+				this.runEvent(newModel, oldModel);
+			}
+		},
+
+		getTo : function(cid, stack) {
+			if(this.loaded / this.totalTracks === 1) {
+				if(this.model) this.model.stop();
+
+				var target = (_.isEqual(stack, window.app.past)) ? window.app.up : window.app.past,
+					searching = true,
+					newModel;
+
+				while(searching) {
+					newModel = stack.collection.shift();
+					searching = (newModel.cid !== cid);
+					if(searching) target.collection.unshift(newModel);
+				}
+
+				target.render();
+				stack.render();
+
+				// TODO: I'm broken :(
+				var oldModel = this.model;
+				if(_.isUndefined(oldModel)) {
+					oldModel = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); });
+				}
+
+				this.runEvent(newModel, oldModel);
 			}
 		},
 
@@ -149,9 +187,9 @@ var Event = Backbone.Model.extend({
 					self.model.audio[index].fade(self.model.audio[index].volume(), values.volume, values.time);
 				});
 			}
-			// we've got a single Howl playing - let's just set the whole player's volume here
-			else if(_.isObject(this.model.audio)) Howler.volume( Howler.volume() + v );
-			// we just need to adjust the volume globally
+			// single howl
+			else if(_.isObject(this.model.audio)) this.model.audio.volume( this.model.audio.volume() + v );
+			// group howl
 			else _.each(this.model.audio, function() { this.volume( this.volume() + v ); });
 		},
 
@@ -190,6 +228,9 @@ var Event = Backbone.Model.extend({
 	}),
 
 	Feed = Backbone.View.extend({
+		events : {
+			'click a' : 'launch'
+		},
 		initialize : function(options) {
 			var self = this;
 			Feed.__super__.initialize.call(this, options);
@@ -204,6 +245,11 @@ var Event = Backbone.Model.extend({
 		},
 		push : function(model) {
 			this.$('ul').append(templates.eventItem.render(model.attributes));
+		},
+		launch : function(e) {
+			e.preventDefault();
+			var self = this;
+			window.app.player.getTo($(e.target).attr('data-cid'), self);
 		}
 	}),
 
@@ -232,7 +278,7 @@ var Event = Backbone.Model.extend({
 
 	templates = {
 		eventItem :
-			'<li>{{ title }}</li>',
+			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a></li>',
 		currentEvent :
 			'<div class="panel">' +
 				'<h3>{{ title }}</h3>' +
