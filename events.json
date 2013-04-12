@@ -65,14 +65,22 @@
 				"loop" : true
 			},
 			{
+				"urls" : [ "audio/princess-frog.mp3" ],
+				"loop" : true
+			},
+			{
 				"urls" : [ "audio/princess-octopus.mp3" ],
 				"loop" : true
 			}
 		],
 		"volume" : [
 			{	
-				"volume" : 1, 
-				"time" : 100 
+				"volume" : 0.8, 
+				"time" : 0 
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			},
 			{
 				"volume" : 0,
@@ -93,12 +101,16 @@
 		"title" : "Princess : Duck",
 		"volume" : [
 			{	
-				"volume" : 0.8, 
+				"volume" : 0.7, 
 				"time" : 10000 
 			},
 			{
-				"volume" : 0.8,
+				"volume" : 0.6,
 				"time" : 10000
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			},
 			{
 				"volume" : 0,
@@ -123,8 +135,12 @@
 				"time" : 4000
 			},
 			{
-				"volume" : 1,
+				"volume" : 0.8,
 				"time" : 10000
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			},
 			{
 				"volume" : 0,
@@ -137,7 +153,7 @@
 		"title" : "Princess : Frog",
 		"volume" : [
 			{	
-				"volume" : 0.7, 
+				"volume" : 0.1, 
 				"time" : 10000 
 			},
 			{
@@ -145,8 +161,12 @@
 				"time" : 0
 			},
 			{
-				"volume" : 1,
-				"time" : 0
+				"volume" : 0,
+				"time" : 4000
+			},
+			{
+				"volume" : 0.7,
+				"time" : 10000
 			},
 			{
 				"volume" : 0,
@@ -164,31 +184,73 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 4000
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 0
 			},
 			{
 				"volume" : 0,
 				"time" : 4000
 			},
 			{
-				"volume" : 1,
+				"volume" : 0.5,
 				"time" : 6000
 			}
 		],
-		"fadeout" : 3000,
 		"endcue" : "<strong>M:</strong> He decided to invite one last person to help."
 	},
 	{
 		"title" : "Princess : Mermaid",
-		"audio" : {
-			"urls" : [ "audio/princess.mp3" ],
-			"loop" : true
-		},
-		"fadeout" : 3000,
+		"volume" : [
+			{
+				"volume" : 0.5, 
+				"time" : 10000 
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			},
+			{
+				"volume" : 0.05,
+				"time" : 10000
+			},
+			{
+				"volume" : 0.1,
+				"time" : 10000
+			},
+			{
+				"volume" : 0,
+				"time" : 10000
+			}
+		],
 		"endcue" : "<strong>M:</strong> Jamie. You can’t just stay in the bathroom and play. You would miss out on so many things. Like your first day of school tomorrow."
 	},
 	{
 		"title" : "No buts.",
+		"volume" : [
+			{
+				"volume" : 0, 
+				"time" : 6000 
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 2000
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			},
+			{
+				"volume" : 0,
+				"time" : 2000
+			}
+		],
 		"endcue" : "<strong>M:</strong> I don’t want a bath or a lunch.  I want to stay here - I like playing here."
 	},
 	{

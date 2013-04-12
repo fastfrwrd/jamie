@@ -124,10 +124,10 @@ var Event = Backbone.Model.extend({
 						oldModel.fade(null, vol, time, function() { oldModel.stop(); });
 					}
 					// play audio if it exists
-					this.model.play();
+					if(this.model) this.model.play();
 				}
 				// set volumes if there are any to set
-				this.volume(this.model.get('volume'));
+				if(this.model) this.volume(this.model.get('volume'));
 				this.render();
 			}
 		},
@@ -145,7 +145,7 @@ var Event = Backbone.Model.extend({
 
 		previous : function() {
 			if(this.loaded / this.totalTracks === 1) {
-				this.model.stop();
+				if(this.model) this.model.stop();
 
 				var self = this,
 					newModel = window.app.past.collection.shift();
