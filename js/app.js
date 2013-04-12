@@ -205,12 +205,12 @@ var Event = Backbone.Model.extend({
 
 		mute : function() {
 			Howler.mute();
-			this.$('.mute').toggleClass('mute unmute').text('Unmute');
+			this.$('.mute').toggleClass('mute unmute alert secondary').text('Unmute');
 		},
 
 		unmute : function() {
 			Howler.unmute();
-			this.$('.unmute').toggleClass('mute unmute').text('Mute');
+			this.$('.unmute').toggleClass('mute unmute alert secondary').text('Mute');
 		},
 
 		pause : function() {
