@@ -13,6 +13,10 @@ var Event = Backbone.Model.extend({
 				var model = window.app.past.collection.first();
 				if(model) return model.get('title');
 				else return false;
+			},
+
+			hasAudio : function() {
+				return (!_.isUndefined(this.volume) || !_.isUndefined(this.audio)) ? "&#9835;" : "";
 			}
 		},
 
@@ -284,7 +288,7 @@ var Event = Backbone.Model.extend({
 
 	templates = {
 		eventItem :
-			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a></li>',
+			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a> {{{ hasAudio }}}</li>',
 		currentEvent :
 			'<div class="panel">' +
 				'<h3>{{ title }}</h3>' +
