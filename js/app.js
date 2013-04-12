@@ -23,14 +23,14 @@ var Event = Backbone.Model.extend({
 		},
 
 		play : function() {
-			if(_.isUndefined(this.audio) || this.get('noStop')) return;
-			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.play(); });
+			if(_.isUndefined(this.audio)) return;
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { console.log(howl); howl.play(); });
 			else this.audio.play();
 		},
 
 		pause : function() {
 			if(_.isUndefined(this.audio)) return;
-			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.pause(); });
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { console.log(howl); howl.pause(); });
 			else this.audio.pause();
 		},
 
@@ -138,11 +138,17 @@ var Event = Backbone.Model.extend({
 		previous : function() {
 			if(this.loaded / this.totalTracks === 1) {
 				var self = this,
-					oldModel = this.model,
-					newModel = window.app.past.collection.shift();
+					newModel = window.app.past.collection.shift(),
+					oldModel;
+
 				// push model onto old queue
-				if(oldModel) window.app.up.collection.add(oldModel, { at : 0 });
-				oldModel.stop();
+				if(this.model) window.app.up.collection.add(this.model, { at : 0 });
+				this.model.stop();
+
+				// if we're in the middle of stems
+				if(newModel.get('volume') && !newModel.audio) {
+					oldModel = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); });
+				}
 				this.runEvent(newModel, oldModel);
 			}
 		},
@@ -153,21 +159,21 @@ var Event = Backbone.Model.extend({
 
 				var target = (_.isEqual(stack, window.app.past)) ? window.app.up : window.app.past,
 					searching = true,
-					newModel;
+					newModel = this.model,
+					oldModel;
 
 				while(searching) {
+					if(newModel) target.collection.unshift(newModel);
 					newModel = stack.collection.shift();
 					searching = (newModel.cid !== cid);
-					if(searching) target.collection.unshift(newModel);
 				}
 
 				target.render();
 				stack.render();
 
-				// TODO: I'm broken :(
-				var oldModel = this.model;
-				if(_.isUndefined(oldModel)) {
-					oldModel = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); });
+				// if we're in the middle of stems
+				if(newModel.get('volume') && !newModel.audio) {
+					oldModel = target.collection.find(function(m) { return _.has(m, 'audio'); });
 				}
 
 				this.runEvent(newModel, oldModel);

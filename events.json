@@ -76,15 +76,15 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			}
 		],
 		"endcue" : "<strong>M:</strong> He invited the first animal to help."
@@ -102,11 +102,11 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			}
 		],
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
@@ -128,7 +128,7 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 10
 			}
 		],
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
@@ -142,15 +142,15 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 1
 			},
 			{
 				"volume" : 1,
-				"time" : 0
+				"time" : 1
 			},
 			{
 				"volume" : 0,
-				"time" : 0
+				"time" : 1
 			}
 		],
 		"endcue" : "<strong>M:</strong> So the king thought and thought. He invited another animal to help."
