@@ -165,7 +165,7 @@
 			},
 			{
 				"volume" : 0,
-				"time" : 4000
+				"time" : 5000
 			},
 			{
 				"volume" : 0.7,
@@ -216,11 +216,11 @@
 				"time" : 0
 			},
 			{
-				"volume" : 0.05,
+				"volume" : 0.15,
 				"time" : 10000
 			},
 			{
-				"volume" : 0.1,
+				"volume" : 0.2,
 				"time" : 10000
 			},
 			{
@@ -228,32 +228,11 @@
 				"time" : 10000
 			}
 		],
+		"fadeout" : 5000,
 		"endcue" : "<strong>M:</strong> Jamie. You can’t just stay in the bathroom and play. You would miss out on so many things. Like your first day of school tomorrow."
 	},
 	{
 		"title" : "No buts.",
-		"volume" : [
-			{
-				"volume" : 0, 
-				"time" : 6000 
-			},
-			{
-				"volume" : 0,
-				"time" : 0
-			},
-			{
-				"volume" : 0,
-				"time" : 2000
-			},
-			{
-				"volume" : 0,
-				"time" : 0
-			},
-			{
-				"volume" : 0,
-				"time" : 2000
-			}
-		],
 		"endcue" : "<strong>M:</strong> I don’t want a bath or a lunch.  I want to stay here - I like playing here."
 	},
 	{

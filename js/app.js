@@ -27,7 +27,7 @@ var Event = Backbone.Model.extend({
 		},
 
 		play : function() {
-			if(_.isUndefined(this.audio) || this.get('noStop')) return;
+			if(_.isUndefined(this.audio)) return;
 			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.play(); });
 			else this.audio.play();
 		},
@@ -39,19 +39,47 @@ var Event = Backbone.Model.extend({
 		},
 
 		fade : function(from, to, time, cb) {
-			if(_.isArray(this.audio)) _.each(this.audio, function(howl) {
-				if(_.isNull(from)) from = howl.volume();
-				howl.fade(from, to, time, cb);
+			var self = this;
+			if(_.isArray(this.audio)) _.each(this.audio, function(howl, index) {
+				var _from = (from) ? from[index].volume : self.get('volume')[index].volume;
+				howl.fade(_from, to, time, cb);
 			});
 			else {
-				var self = this;
-				if(_.isNull(from)) from = this.audio.volume();
+				if(!from) from = this.audio.volume();
 				this.audio.fade(from, to, time, cb);
 			}
 		},
 
+		volume : function(v) {
+			// an array means we've got a list of volume setters for currently playing tracks
+			if (!v) {
+				if(this.get('volume')) {
+					var model = (_.isArray(this.audio)) ? this : window.app.getOriginalEvent();
+					_.each(this.get('volume'), function(values, index) {
+						_.defaults(values, {
+							volume : 0.5,
+							time : 300
+						});
+
+						if(values.time === 0) {
+							model.audio[index].volume(values.volume);
+						}
+						else model.audio[index].fade(model.audio[index].volume(), values.volume, values.time);
+					});
+				}
+			}
+			// single howl
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.volume( howl.volume() + v ); });
+			// group howl
+			else if(this.audio) this.audio.volume( this.audio.volume() + v );
+		},
+
 		stop : function() {
-			if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.stop(); });
+			if(_.isArray(this.audio)) {
+				_.each(this.audio, function(howl) {
+					howl.stop();
+				});
+			}
 			else if(this.audio) this.audio.stop();
 		},
 
@@ -90,8 +118,8 @@ var Event = Backbone.Model.extend({
 			'click .pause' : 'pause',
 			'click .mute' : 'mute',
 			'click .unmute' : 'unmute',
-			'click .vol.up' : function(e) { this.volume(0.1); },
-			'click .vol.down' : function(e) { this.volume(-0.1); }
+			'click .vol.up' : function(e) { this.model.volume(0.1); },
+			'click .vol.down' : function(e) { this.model.volume(-0.1); }
 		},
 		initialize : function(options) {
 			var self = this;
@@ -103,34 +131,27 @@ var Event = Backbone.Model.extend({
 			this.render();
 		},
 
-		runEvent : function(newModel, oldModel) {
+		runEvent : function(newModel) {
 			if(this.loaded / this.totalTracks === 1) {
-				// there's a new model in town
-				this.model = newModel;
-				// if we need to keep going, handle volume changes and put old model audio onto new model audio
-				if(newModel && newModel.get('volume')) {
-					if(oldModel) {
-						newModel.audio = oldModel.audio;
-					} else {
-						this.model.play();
-					}
-				}
-				// we're gonna fade out the old track otherwise
-				else {
-					if(oldModel && oldModel.audio && !newModel.get('volume')) {
-						var vol = (oldModel.get('fadevol')) ? oldModel.get('fadevol') : 0,
-							time = (oldModel.get('fadeout')) ? oldModel.get('fadeout') : 100;
+				// we're gonna fade out the old track if we're done with it
+				if(this.model && ( this.model.get('fadeout') || !newModel.get('volume') )) {
+					var vol = (this.model.get('fadevol')) ? this.model.get('fadevol') : 0,
+						time = (this.model.get('fadeout')) ? this.model.get('fadeout') : 100,
+						model = (this.model.audio) ? this.model : window.app.getOriginalEvent();
 
-						oldModel.fade(null, vol, time, function() {
-							oldModel.stop();
-							oldModel.audio.volume(1);
-						});
-					}
-					// play audio if it exists
-					if(this.model) this.model.play();
+					model.fade(this.model.get('volume'), vol, time, function() {
+						model.stop();
+						model.volume(1);
+					});
 				}
+				// play audio if it exists
+				if(newModel.audio) newModel.play();
+
+				// set items
+				this.model = newModel;
+
 				// set volumes if there are any to set
-				if(this.model) this.volume(this.model.get('volume'));
+				if(this.model) this.model.volume();
 				this.render();
 			}
 		},
@@ -138,40 +159,41 @@ var Event = Backbone.Model.extend({
 		next : function() {
 			if(this.loaded / this.totalTracks === 1) {
 				var self = this,
-					oldModel = this.model,
 					newModel = window.app.up.collection.shift();
-				// push model onto old queue
-				if(oldModel) window.app.past.collection.add(oldModel, { at : 0 });
-				this.runEvent(newModel, oldModel);
+				// push model onto queue
+				if(this.model) window.app.past.collection.add(this.model, { at : 0 });
+				this.runEvent(newModel);
 			}
 		},
 
 		previous : function() {
 			if(this.loaded / this.totalTracks === 1) {
-				if(this.model) this.model.stop();
-
 				var self = this,
 					newModel = window.app.past.collection.shift();
 
-				// push model onto old queue
-				if(this.model) window.app.up.collection.add(this.model, { at : 0 });
+				// push model onto queue
+				if(this.model) {
+					window.app.up.collection.add(this.model, { at : 0 });
+					this.model.stop();
+				}
 
 				// if we're in the middle of stems
-				if(newModel.get('volume') && !newModel.audio) {
-					newModel.audio = window.app.past.collection.find(function(m) { return _.has(m, 'audio'); }).audio;
+				if(newModel.get('volume')) {
+					this.model = window.app.getOriginalEvent();
+					this.model.stop();
+					this.model.play();
+					this.model.volume();
 				}
+
 				this.runEvent(newModel);
 			}
 		},
 
 		getTo : function(cid, stack) {
 			if(this.loaded / this.totalTracks === 1) {
-				if(this.model) this.model.stop();
-
 				var target = (_.isEqual(stack, window.app.past)) ? window.app.up : window.app.past,
 					searching = true,
-					newModel = this.model,
-					oldModel;
+					newModel = this.model;
 
 				while(searching) {
 					if(newModel) target.collection.unshift(newModel);
@@ -182,33 +204,22 @@ var Event = Backbone.Model.extend({
 				target.render();
 				stack.render();
 
+				// stop all the things
+				target.collection.each(function(model) { model.stop(); });
+				stack.collection.each(function(model) { model.stop(); });
+				newModel.stop();
+
 				// if we're in the middle of stems
 				if(newModel.get('volume') && !newModel.audio) {
-					newModel.audio = target.collection.find(function(m) { return _.has(m, 'audio'); }).audio;
+					this.model = window.app.getOriginalEvent();
+					this.model.play();
+					_.each(this.model.audio, function(howl, index) {
+						howl.volume(newModel.get('volume')[index].volume);
+					});
 				}
 
 				this.runEvent(newModel);
 			}
-		},
-
-		volume : function(v) {
-			var self = this;
-			// an array means we've got a list of volume setters for currently playing tracks
-			if (_.isArray(v) && _.isArray(this.model.audio)) {
-				_.each(v, function(values, index) {
-					_.defaults(values, {
-						volume : 0.5,
-						time : 300
-					});
-
-					if(values.time === 0) self.model.audio[index].volume(values.volume);
-					else self.model.audio[index].fade(self.model.audio[index].volume(), values.volume, values.time);
-				});
-			}
-			// single howl
-			else if(_.isObject(this.model.audio)) this.model.audio.volume( this.model.audio.volume() + v );
-			// group howl
-			else _.each(this.model.audio, function() { this.volume( this.volume() + v ); });
 		},
 
 		mute : function() {
@@ -291,6 +302,10 @@ var Event = Backbone.Model.extend({
 				default:
 					break;
 			}
+		},
+
+		getOriginalEvent : function() {
+			return this.past.collection.find(function(m) { return _.has(m, 'audio'); });
 		}
 	}),
 
