@@ -121,7 +121,10 @@ var Event = Backbone.Model.extend({
 						var vol = (oldModel.get('fadevol')) ? oldModel.get('fadevol') : 0,
 							time = (oldModel.get('fadeout')) ? oldModel.get('fadeout') : 100;
 
-						oldModel.fade(null, vol, time, function() { oldModel.stop(); });
+						oldModel.fade(null, vol, time, function() {
+							oldModel.stop();
+							oldModel.audio.volume(1);
+						});
 					}
 					// play audio if it exists
 					if(this.model) this.model.play();
