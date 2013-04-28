@@ -177,6 +177,7 @@ var Event = Backbone.Model.extend({
 				else {
 					// last track
 					this.model.stop();
+					delete this.model;
 					this.$('.current').html(templates.playerReady.render());
 				}
 			}
@@ -193,15 +194,22 @@ var Event = Backbone.Model.extend({
 					this.model.stop();
 				}
 
-				// if we're in the middle of stems
-				if(newModel.get('volume')) {
-					this.model = window.app.getOriginalEvent();
-					this.model.stop();
-					this.model.play();
-					this.model.volume();
-				}
+				if(newModel) {
+					// if we're in the middle of stems
+					if(newModel.get('volume')) {
+						this.model = window.app.getOriginalEvent();
+						this.model.stop();
+						this.model.play();
+						this.model.volume();
+					}
 
-				this.runEvent(newModel);
+					this.runEvent(newModel);
+				} else {
+					// first track
+					this.model.stop();
+					delete this.model;
+					this.$('.current').html(templates.playerReady.render());
+				}
 			}
 		},
 
