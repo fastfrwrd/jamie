@@ -3,7 +3,7 @@
 		"title" : "Preshow",
 		"endcue" : "<strong>M:</strong> Jamie- Mr. Hoppy needs to be put away.",
 		"audio" : {
-			"urls" : [ "audio/preshow.mp3" ],
+			"urls" : [ "audio/preshow.ogg" ],
 			"loop" : true 
 		},
 		"fadeout" : 5000
@@ -16,7 +16,7 @@
 		"title" : "Toothpaste",
 		"endcue" : "<em>(autoend)</em> <strong>M:</strong> Jamie!",
 		"audio" : {
-			"urls" : [ "audio/toothpaste.mp3" ]
+			"urls" : [ "audio/toothpaste.ogg" ]
 		}
 	},
 	{
@@ -26,7 +26,7 @@
 	{
 		"title" : "Cape",
 		"audio" : {
-			"urls" : [ "audio/superhero.mp3" ]
+			"urls" : [ "audio/superhero.ogg" ]
 		},
 		"endcue" : "<em>(autoend, straight into Washcloths)</em>"
 	},
@@ -34,11 +34,11 @@
 		"title" : "Washcloths",
 		"audio" : [
 			{
-				"urls" : [ "audio/washcloths-low.mp3" ],
+				"urls" : [ "audio/washcloths-low.ogg" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/washcloths-active.mp3" ],
+				"urls" : [ "audio/washcloths-active.ogg" ],
 				"loop" : true
 			}
 		],
@@ -77,23 +77,23 @@
 		"title" : "Princess : Intro",
 		"audio" : [
 			{
-				"urls" : [ "audio/princess.mp3" ],
+				"urls" : [ "audio/princess.ogg" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-duck.mp3" ],
+				"urls" : [ "audio/princess-duck.ogg" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-fish.mp3" ],
+				"urls" : [ "audio/princess-fish.ogg" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-frog.mp3" ],
+				"urls" : [ "audio/princess-frog.ogg" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-octopus.mp3" ],
+				"urls" : [ "audio/princess-octopus.ogg" ],
 				"loop" : true
 			}
 		],
@@ -259,7 +259,7 @@
 	{
 		"title" : "TP",
 		"audio" : {
-			"urls" : [ "audio/tp.mp3" ],
+			"urls" : [ "audio/tp.ogg" ],
 			"loop" : false
 		},
 		"fadeout" : 300,
@@ -268,7 +268,7 @@
 	{
 		"title" : "What has gotten into you?",
 		"audio" : {
-			"urls" : [ "audio/gong.mp3" ]
+			"urls" : [ "audio/gong.ogg" ]
 		},
 		"endcue" : "<em></em><strong>M:</strong> Let’s just get it cleaned up. Okay?"
 	},
@@ -276,7 +276,7 @@
 		"title" : "Big kid",
 		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
 		"audio" : {
-			"urls" : [ "audio/bigkid.mp3" ],
+			"urls" : [ "audio/bigkid.ogg" ],
 			"loop" : true,
 			"volume" : 0.6
 		},
@@ -290,7 +290,7 @@
 		"title" : "Post-show",
 		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
 		"audio" : {
-			"urls" : [ "audio/postshow.mp3" ],
+			"urls" : [ "audio/postshow.ogg" ],
 			"volume" : 0.6
 		},
 		"fadeout" : 0

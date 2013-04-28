@@ -1,5 +1,4 @@
-	// MODELS
-var Event = Backbone.Model.extend({
+var AudioEvent = Backbone.Model.extend({
 		defaults : {
 			title : 'Event',
 			details : ['No details available'],
@@ -22,7 +21,7 @@ var Event = Backbone.Model.extend({
 
 		initialize : function(options) {
 			if(_.isObject(options.audio) || _.isArray(options.audio)) this.audio = this._setupTrack(options.audio);
-			Event.__super__.initialize.call(this, options);
+			AudioEvent.__super__.initialize.call(this, options);
 			this.set('cid', this.cid);
 		},
 
@@ -103,7 +102,7 @@ var Event = Backbone.Model.extend({
 
 	// COLLECTIONS
 	Events = Backbone.Collection.extend({
-		model : Event
+		model : AudioEvent
 	}),
 
 	// VIEWS
