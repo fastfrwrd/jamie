@@ -50,14 +50,6 @@ var Event = Backbone.Model.extend({
 			}
 		},
 
-		restart : function() {
-			if(_.isUndefined(this.audio)) return;
-			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.pos(0); });
-			else this.audio.pos(0);
-
-			this.audio.play();
-		},
-
 		volume : function(v) {
 			// an array means we've got a list of volume setters for currently playing tracks
 			if (!v) {
@@ -257,19 +249,22 @@ var Event = Backbone.Model.extend({
 		},
 
 		pause : function() {
-			this.model.pause();
+			if (this.model.audio) this.model.pause();
+			else window.app.getOriginalEvent().pause();
 			this.$('.pause').toggleClass('pause play').text('Play');
 		},
 
 		play : function() {
-			this.model.play();
+			if (this.model.audio) this.model.play();
+			else window.app.getOriginalEvent().play();
 			this.$('.play').toggleClass('pause play').text('Pause');
 		},
 
 		restart : function() {
-			console.log('restart', this.model);
-			this.model.stop();
-			this.model.restart();
+			var model = (this.model.audio) ? this.model :window.app.getOriginalEvent();
+
+			model.stop();
+			model.play();
 		},
 
 		render : function() {
