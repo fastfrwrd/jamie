@@ -118,9 +118,15 @@ var Event = Backbone.Model.extend({
 			'click .pause' : 'pause',
 			'click .mute' : 'mute',
 			'click .unmute' : 'unmute',
-			'click .vol.up' : function(e) { this.model.volume(0.1); },
-			'click .vol.down' : function(e) { this.model.volume(-0.1); },
-			'click h3 a' : 'restart'
+			'click .restart' : 'restart',
+			'click .vol.up' : function(e) {
+				if(!this.model) return;
+				this.model.volume(0.1);
+			},
+			'click .vol.down' : function(e) {
+				if(!this.model) return;
+				this.model.volume(-0.1);
+			}
 		},
 		initialize : function(options) {
 			var self = this;
@@ -149,6 +155,7 @@ var Event = Backbone.Model.extend({
 				}
 				// play audio if it exists
 				if(newModel.audio) newModel.play();
+				else if(this.$('.play').length) this.play();
 
 				// set items
 				this.model = newModel;
@@ -249,12 +256,14 @@ var Event = Backbone.Model.extend({
 		},
 
 		pause : function() {
+			if(!this.model) return;
 			if (this.model.audio) this.model.pause();
 			else window.app.getOriginalEvent().pause();
 			this.$('.pause').toggleClass('pause play').text('Play');
 		},
 
 		play : function() {
+			if(!this.model) return;
 			if (this.model.audio) this.model.play();
 			else window.app.getOriginalEvent().play();
 			this.$('.play').toggleClass('pause play').text('Pause');
@@ -339,7 +348,7 @@ var Event = Backbone.Model.extend({
 			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a> {{{ hasAudio }}}</li>',
 		currentEvent :
 			'<div class="panel">' +
-				'<h3><a href="#">{{ title }}</a></h3>' +
+				'<h3><a class="restart" href="#">{{ title }}</a></h3>' +
 				'<hr />' +
 				'{{# time }}<div class="row">' +
 					'<div class="large-3 columns"><strong class="right">Time</strong></div>' +
