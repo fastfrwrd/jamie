@@ -50,6 +50,14 @@ var Event = Backbone.Model.extend({
 			}
 		},
 
+		restart : function() {
+			if(_.isUndefined(this.audio)) return;
+			else if(_.isArray(this.audio)) _.each(this.audio, function(howl) { howl.pos(0); });
+			else this.audio.pos(0);
+
+			this.audio.play();
+		},
+
 		volume : function(v) {
 			// an array means we've got a list of volume setters for currently playing tracks
 			if (!v) {
@@ -119,7 +127,8 @@ var Event = Backbone.Model.extend({
 			'click .mute' : 'mute',
 			'click .unmute' : 'unmute',
 			'click .vol.up' : function(e) { this.model.volume(0.1); },
-			'click .vol.down' : function(e) { this.model.volume(-0.1); }
+			'click .vol.down' : function(e) { this.model.volume(-0.1); },
+			'click h3 a' : 'restart'
 		},
 		initialize : function(options) {
 			var self = this;
@@ -139,10 +148,12 @@ var Event = Backbone.Model.extend({
 						time = (this.model.get('fadeout')) ? this.model.get('fadeout') : 100,
 						model = (this.model.audio) ? this.model : window.app.getOriginalEvent();
 
-					model.fade(this.model.get('volume'), vol, time, function() {
-						model.stop();
-						model.volume(1);
-					});
+					if(model) {
+						model.fade(this.model.get('volume'), vol, time, function() {
+							model.stop();
+							model.volume(1);
+						});
+					}
 				}
 				// play audio if it exists
 				if(newModel.audio) newModel.play();
@@ -162,7 +173,12 @@ var Event = Backbone.Model.extend({
 					newModel = window.app.up.collection.shift();
 				// push model onto queue
 				if(this.model) window.app.past.collection.add(this.model, { at : 0 });
-				this.runEvent(newModel);
+				if(newModel) this.runEvent(newModel);
+				else {
+					// last track
+					this.model.stop();
+					this.$('.current').html(templates.playerReady.render());
+				}
 			}
 		},
 
@@ -242,6 +258,12 @@ var Event = Backbone.Model.extend({
 			this.$('.play').toggleClass('pause play').text('Pause');
 		},
 
+		restart : function() {
+			console.log('restart', this.model);
+			this.model.stop();
+			this.model.restart();
+		},
+
 		render : function() {
 			var self = this,
 				html;
@@ -314,7 +336,7 @@ var Event = Backbone.Model.extend({
 			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a> {{{ hasAudio }}}</li>',
 		currentEvent :
 			'<div class="panel">' +
-				'<h3>{{ title }}</h3>' +
+				'<h3><a href="#">{{ title }}</a></h3>' +
 				'<hr />' +
 				'{{# time }}<div class="row">' +
 					'<div class="large-3 columns"><strong class="right">Time</strong></div>' +

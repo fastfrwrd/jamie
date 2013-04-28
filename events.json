@@ -20,16 +20,7 @@
 		}
 	},
 	{
-		"title" : "Toothpaste Cleanup",
-		"endcue" : "<strong>M:</strong> It's not a choice.<br /><strong>J:</strong> I'm not taking a bath."
-	},
-	{
-		"title" : "Duck!",
-		"endcue" : "<em>(autoend whenever)</em>",
-		"fadeout" : 3000
-	},
-	{
-		"title" : "Ferguson",
+		"title" : "Ferguson the Duck",
 		"endcue" : "<strong>J:</strong> Towel."
 	},
 	{
@@ -41,12 +32,42 @@
 	},
 	{
 		"title" : "Washcloths",
-		"audio" : {
-			"urls" : [ "audio/preshow.mp3" ],
-			"loop" : true
-		},
-		"fadeout" : 3000,
-		"endcue" : "<strong>M:</strong> Jamie, let's get you into the bathtub so you can keep playing with the washcloths."
+		"audio" : [
+			{
+				"urls" : [ "audio/washcloths-low.mp3" ],
+				"loop" : true
+			},
+			{
+				"urls" : [ "audio/washcloths-active.mp3" ],
+				"loop" : true
+			}
+		],
+		"volume" : [
+			{	
+				"volume" : 0.6, 
+				"time" : 0 
+			},
+			{
+				"volume" : 0,
+				"time" : 0
+			}
+		],
+		"endcue" : ""
+	},
+	{
+		"title" : "Washcloths (build)",
+		"volume" : [
+			{	
+				"volume" : 0.6, 
+				"time" : 0 
+			},
+			{
+				"volume" : 0.35,
+				"time" : 10000
+			}
+		],
+		"endcue" : "<em>(washcloths over)</em>",
+		"fadeout" : 5000
 	},
 	{
 		"title" : "No No NO!",
@@ -233,7 +254,7 @@
 	},
 	{
 		"title" : "No buts.",
-		"endcue" : "<strong>M:</strong> I don’t want a bath or a lunch.  I want to stay here - I like playing here."
+		"endcue" : "<strong>J</strong> hits the toilet paper roll for the first time."
 	},
 	{
 		"title" : "TP",
@@ -241,21 +262,37 @@
 			"urls" : [ "audio/tp.mp3" ],
 			"loop" : false
 		},
-		"fadeout" : 1000,
-		"endcue" : "<em>(autoend)</em>"
+		"fadeout" : 300,
+		"endcue" : "<strong>M:</strong> Jamie!"
 	},
 	{
 		"title" : "What has gotten into you?",
-		"endcue" : "<strong>M:</strong> Let’s just get it cleaned up. Okay?"
+		"audio" : {
+			"urls" : [ "audio/gong.mp3" ]
+		},
+		"endcue" : "<em></em><strong>M:</strong> Let’s just get it cleaned up. Okay?"
 	},
 	{
 		"title" : "Big kid",
 		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
-		"fadeout" : 4000
+		"audio" : {
+			"urls" : [ "audio/bigkid.mp3" ],
+			"loop" : true,
+			"volume" : 0.6
+		},
+		"fadeout" : 10000
+	},
+	{
+		"title" : "Curtain Call",
+		"endcue" : "<em>Ready for the post show</em>"
 	},
 	{
 		"title" : "Post-show",
-		"endcue" : "",
-		"fadeout" : 20000
+		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
+		"audio" : {
+			"urls" : [ "audio/postshow.mp3" ],
+			"volume" : 0.6
+		},
+		"fadeout" : 0
 	}
 ]
