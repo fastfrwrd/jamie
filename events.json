@@ -3,7 +3,7 @@
 		"title" : "Preshow",
 		"endcue" : "<strong>M:</strong> Jamie- Mr. Hoppy needs to be put away.",
 		"audio" : {
-			"urls" : [ "audio/preshow.ogg" ],
+			"urls" : [ "audio/preshow.ogg", "audio/preshow.mp3" ],
 			"loop" : true 
 		},
 		"fadeout" : 5000
@@ -16,7 +16,7 @@
 		"title" : "Toothpaste",
 		"endcue" : "<em>(autoend)</em> <strong>M:</strong> Jamie!",
 		"audio" : {
-			"urls" : [ "audio/toothpaste.ogg" ]
+			"urls" : [ "audio/toothpaste.ogg", "audio/toothpaste.mp3" ]
 		}
 	},
 	{
@@ -26,7 +26,7 @@
 	{
 		"title" : "Cape",
 		"audio" : {
-			"urls" : [ "audio/superhero.ogg" ]
+			"urls" : [ "audio/superhero.ogg", "audio/superhero.mp3" ]
 		},
 		"endcue" : "<em>(autoend, straight into Washcloths)</em>"
 	},
@@ -34,11 +34,11 @@
 		"title" : "Washcloths",
 		"audio" : [
 			{
-				"urls" : [ "audio/washcloths-low.ogg" ],
+				"urls" : [ "audio/washcloths-low.ogg", "audio/washcloths-low.mp3" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/washcloths-active.ogg" ],
+				"urls" : [ "audio/washcloths-active.ogg", "audio/washcloths-active.mp3" ],
 				"loop" : true
 			}
 		],
@@ -77,23 +77,23 @@
 		"title" : "Princess : Intro",
 		"audio" : [
 			{
-				"urls" : [ "audio/princess.ogg" ],
+				"urls" : [ "audio/princess.ogg", "audio/princess.mp3" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-duck.ogg" ],
+				"urls" : [ "audio/princess-duck.ogg", "audio/princess-duck.mp3" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-fish.ogg" ],
+				"urls" : [ "audio/princess-fish.ogg", "audio/princess-fish.mp3" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-frog.ogg" ],
+				"urls" : [ "audio/princess-frog.ogg", "audio/princess-frog.mp3" ],
 				"loop" : true
 			},
 			{
-				"urls" : [ "audio/princess-octopus.ogg" ],
+				"urls" : [ "audio/princess-octopus.ogg", "audio/princess-octopus.mp3" ],
 				"loop" : true
 			}
 		],
@@ -259,7 +259,7 @@
 	{
 		"title" : "TP",
 		"audio" : {
-			"urls" : [ "audio/tp.ogg" ],
+			"urls" : [ "audio/tp.ogg", "audio/tp.mp3" ],
 			"loop" : false
 		},
 		"fadeout" : 300,
@@ -268,7 +268,7 @@
 	{
 		"title" : "What has gotten into you?",
 		"audio" : {
-			"urls" : [ "audio/gong.ogg" ]
+			"urls" : [ "audio/gong.ogg", "audio/gong.mp3" ]
 		},
 		"endcue" : "<em></em><strong>M:</strong> Let’s just get it cleaned up. Okay?"
 	},
@@ -276,7 +276,7 @@
 		"title" : "Big kid",
 		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
 		"audio" : {
-			"urls" : [ "audio/bigkid.ogg" ],
+			"urls" : [ "audio/bigkid.ogg", "audio/bigkid.mp3" ],
 			"loop" : true,
 			"volume" : 0.6
 		},
@@ -290,7 +290,7 @@
 		"title" : "Post-show",
 		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
 		"audio" : {
-			"urls" : [ "audio/postshow.ogg" ],
+			"urls" : [ "audio/postshow.ogg", "audio/postshow.mp3" ],
 			"volume" : 0.6
 		},
 		"fadeout" : 0
