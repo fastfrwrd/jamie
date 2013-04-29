@@ -16,6 +16,10 @@ var AudioEvent = Backbone.Model.extend({
 
 			hasAudio : function() {
 				return (!_.isUndefined(this.volume) || !_.isUndefined(this.audio)) ? "&#9835;" : "";
+			},
+
+			autoend : function() {
+				return (_.isUndefined(this.volume) && !_.isUndefined(this.audio) && !this.audio.loop && !this.endcue);
 			}
 		},
 
@@ -346,8 +350,8 @@ var AudioEvent = Backbone.Model.extend({
 		eventItem :
 			'<li><a href="#" data-cid="{{ cid }}">{{ title }}</a> {{{ hasAudio }}}</li>',
 		currentEvent :
-			'<div class="panel">' +
-				'<h3><a class="restart" href="#">{{ title }}</a></h3>' +
+			'<div class="panel{{#autoend}} autoend{{/autoend}}">' +
+				'<h3><a class="restart" href="#">{{ title }}</a> {{{ hasAudio }}} {{#autoend}}<em>(autoend)</em>{{/autoend}}</h3>' +
 				'<hr />' +
 				'{{# time }}<div class="row">' +
 					'<div class="large-3 columns"><strong class="right">Time</strong></div>' +

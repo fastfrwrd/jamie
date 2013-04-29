@@ -1,6 +1,10 @@
 .hide { display:none !important; }
 .current .row { padding: 0 0 1em; }
 
+.panel.autoend {
+    opacity: 0.5;
+}
+
 @media screen and (max-width:768px) {
 	.right { float: none !important; }
 }

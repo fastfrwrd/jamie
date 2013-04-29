@@ -14,7 +14,6 @@
 	},
 	{
 		"title" : "Toothpaste",
-		"endcue" : "<em>(autoend)</em> <strong>M:</strong> Jamie!",
 		"audio" : {
 			"urls" : [ "audio/toothpaste.ogg", "audio/toothpaste.mp3" ]
 		}
@@ -27,8 +26,7 @@
 		"title" : "Cape",
 		"audio" : {
 			"urls" : [ "audio/superhero.ogg", "audio/superhero.mp3" ]
-		},
-		"endcue" : "<em>(autoend, straight into Washcloths)</em>"
+		}
 	},
 	{
 		"title" : "Washcloths",
@@ -52,7 +50,7 @@
 				"time" : 0
 			}
 		],
-		"endcue" : ""
+		"endcue" : "<strong>J:</strong> Let's make our washcloths dance!"
 	},
 	{
 		"title" : "Washcloths (build)",
@@ -66,7 +64,7 @@
 				"time" : 10000
 			}
 		],
-		"endcue" : "<em>(washcloths over)</em>",
+		"endcue" : "<strong>M:</strong> And now let’s swim the washcloths away!",
 		"fadeout" : 5000
 	},
 	{
@@ -287,12 +285,10 @@
 		"endcue" : "<em>Ready for the post show</em>"
 	},
 	{
-		"title" : "Post-show",
-		"endcue" : "<strong>M:</strong> I love you, Jamie. Even when you won’t take a bath.",
+		"title" : "Postshow",
 		"audio" : {
 			"urls" : [ "audio/postshow.ogg", "audio/postshow.mp3" ],
 			"volume" : 0.6
-		},
-		"fadeout" : 0
+		}
 	}
 ]
