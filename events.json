@@ -19,8 +19,22 @@
 		}
 	},
 	{
+		"title" : "Cleanup",
+		"endcue" : "<strong>M:</strong> It’s not a choice."
+	},
+	{
 		"title" : "Ferguson the Duck",
-		"endcue" : "<strong>J:</strong> Towel."
+		"audio" : {
+			"urls" : [ "audio/ferguson.ogg", "audio/ferguson.mp3" ],
+			"loop" : true
+		},
+		"endcue" : "<strong>J:</strong> I'm still not taking a bath...",
+		"fadeout" : 10000
+		
+	},
+	{
+		"title" : "Towel",
+		"endcue" : "J: Towel."
 	},
 	{
 		"title" : "Cape",
@@ -42,7 +56,7 @@
 		],
 		"volume" : [
 			{	
-				"volume" : 0.6, 
+				"volume" : 0.3, 
 				"time" : 0 
 			},
 			{
@@ -56,7 +70,7 @@
 		"title" : "Washcloths (build)",
 		"volume" : [
 			{	
-				"volume" : 0.6, 
+				"volume" : 0.5, 
 				"time" : 0 
 			},
 			{
